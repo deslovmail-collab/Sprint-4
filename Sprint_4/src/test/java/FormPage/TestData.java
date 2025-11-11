@@ -1,4 +1,4 @@
-package FormPage;
+package formPage;
 
 public class TestData {
     public static final Object[][] ORDER_DATA = {
