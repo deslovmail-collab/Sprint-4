@@ -3,7 +3,7 @@ package tests;
 import formPage.MainPage;
 import formPage.OrderPage;
 import formPage.TestData;
-import urls.Urls;
+import formPage.Urls;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -81,7 +81,7 @@ public class RentalPageTest {
 
     @Test
     public void shouldSuccessfullyCompleteOrder() {
-        // 1. Нажимаем кнопку «Заказать» в шапке
+        // 1. Нажимаем верхнюю кнопку «Заказать»
         mainPage.clickTopOrderButton();
 
         // 2. Заполняем личные данные
@@ -90,11 +90,8 @@ public class RentalPageTest {
         // 3. Переходим на второй шаг — «Про аренду»
         orderPage.clickNextButton();
 
-        // Проверка: заголовок «Про аренду» отображается
-        assertTrue(
-                "Ожидается заголовок 'Про аренду' на втором шаге",
-                orderPage.isAboutRentHeaderVisible()
-        );
+        // Проверка: отображается заголовок «Про аренду»
+        assertTrue(orderPage.isAboutRentHeaderVisible());
 
         // 4. Заполняем данные аренды
         orderPage.setRentalDate("09.10.2025");
@@ -102,17 +99,14 @@ public class RentalPageTest {
         orderPage.selectScooterColor("чёрный жемчуг");
         orderPage.addComment("Привет, было сложно, но я старался");
 
-        // 5. Нажимаем «Заказать» — появится модальное окно подтверждения
+        // 5. Нажимаем кнопку «Заказать» на форме
         orderPage.clickRentButton();
 
-        // 6. Подтверждаем заказ — жмём «Да»
+        // 6. Подтверждаем заказ
         orderPage.confirmOrder();
 
         // 7. Проверка: появилось окно «Заказ оформлен»
-        assertTrue(
-                "Ожидается появление модального окна с текстом 'Заказ оформлен', но оно не появилось",
-                orderPage.isOrderConfirmed()
-        );
+        assertTrue(orderPage.isOrderConfirmed());
     }
 
     @After

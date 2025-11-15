@@ -1,7 +1,7 @@
 package tests;
 
 import formPage.MainPage;
-import urls.Urls;
+import formPage.Urls;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

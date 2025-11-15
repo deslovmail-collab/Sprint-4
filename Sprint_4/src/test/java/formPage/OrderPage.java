@@ -11,7 +11,7 @@ public class OrderPage {
     private WebDriver driver;
     private WebDriverWait wait;
 
-    // ЛОКАТОРЫ (перенесены из OrderPageLocators)
+    // ЛОКАТОРЫ
     private static final By FIELD_NAME = By.cssSelector("input[placeholder = '* Имя']");
     private static final By FIELD_LAST_NAME = By.cssSelector("input[placeholder = '* Фамилия']");
     private static final By DELIVERY_ADDRESS_FIELD = By.cssSelector("input[placeholder = '* Адрес: куда привезти заказ']");
@@ -25,34 +25,28 @@ public class OrderPage {
     private static final By NEXT_BUTTON = By.xpath("//button[text()='Далее']");
     private static final By SCOOTER_COLOR_BLACK = By.id("black");
     private static final By SCOOTER_COLOR_GREY = By.id("grey");
-    private static final By BOTTOM_ORDER_BUTTON = By.xpath("//button[contains(text(), 'Заказать') and parent::div[contains(@class, 'Home_FinishButton')]]");
-    private static final By ABOUT_RENT_HEADER = By.xpath("//div[text()='Про аренду']");
-    private static final By TOP_ORDER_BUTTON = By.className("Button_Button__ra12g");
     private static final By CLICK_RENTAL_BUTTON = By.xpath("//div[contains(@class, 'Buttons')]//button[text()='Заказать']");
     private static final By CLICK_YES_BUTTON = By.xpath("//div[contains(@class, 'Modal')]//button[text()='Да']");
     private static final By ORDER_CONFIRMED_HEADER = By.xpath("//div[contains(@class, 'ModalHeader') and text()='Заказ оформлен']");
+    private static final By ABOUT_RENT_HEADER = By.xpath("//div[text()='Про аренду']");
 
-    // КОНСТРУКТОР
     public OrderPage(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
     }
 
-    // МЕТОДЫ
     public void fillPersonalInfo(String name, String lastName, String address, String station, String phone) {
         sendKeys(FIELD_NAME, name);
         sendKeys(FIELD_LAST_NAME, lastName);
         sendKeys(DELIVERY_ADDRESS_FIELD, address);
-        // Выбор станции метро
         click(CLICK_METRO_SELECTION_FIELD);
         sendKeys(CLICK_METRO_SELECTION_FIELD, station);
         click(SELECT_METRO_STATION);
-        // Набор номера телефона
         sendKeys(FIELD_PHONE, phone);
     }
 
     public void clickNextButton() {
-        closeCookieIfPresent();
+        closeCookieBanner();
         click(NEXT_BUTTON);
     }
 
@@ -106,14 +100,6 @@ public class OrderPage {
                 ABOUT_RENT_HEADER, "Про аренду")) != null;
     }
 
-    public void clickTopOrderButton() {
-        click(TOP_ORDER_BUTTON);
-    }
-
-    public void clickBottomOrderButton() {
-        click(BOTTOM_ORDER_BUTTON);
-    }
-
     private void sendKeys(By locator, String text) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).sendKeys(text);
     }
@@ -122,15 +108,11 @@ public class OrderPage {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
     }
 
-    private void closeCookieIfPresent() {
+    //
+    public void closeCookieBanner() {
         if (driver.findElements(COOKIE_BUTTON).size() > 0) {
             wait.until(ExpectedConditions.elementToBeClickable(COOKIE_BUTTON)).click();
         }
-    }
-
-    public void closeCookieBanner() {
-        WebElement cookieButton = wait.until(ExpectedConditions.elementToBeClickable(COOKIE_BUTTON));
-        cookieButton.click();
     }
 
     public boolean isNameFieldVisible() {

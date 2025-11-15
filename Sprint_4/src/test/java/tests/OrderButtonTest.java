@@ -1,7 +1,8 @@
 package tests;
 
+import formPage.MainPage;
 import formPage.OrderPage;
-import urls.Urls;
+import formPage.Urls;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,6 +23,7 @@ public class OrderButtonTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
+    private MainPage mainPage;
     private OrderPage orderPage;
 
     private final String buttonLocation;
@@ -45,19 +47,20 @@ public class OrderButtonTest {
         driver = new ChromeDriver(options);
         driver.get(Urls.MAIN_URL);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        mainPage = new MainPage(driver, wait);
         orderPage = new OrderPage(driver, wait);
     }
 
     @Test
     public void shouldOpenOrderFormWhenClickOrderButton() {
         if (buttonLocation.equals("bottom")) {
-            orderPage.closeCookieBanner();
+            orderPage.closeCookieBanner(); // ✅ теперь метод с таким именем есть
         }
 
         if (buttonLocation.equals("top")) {
-            orderPage.clickTopOrderButton();
+            mainPage.clickTopOrderButton();
         } else {
-            orderPage.clickBottomOrderButton();
+            mainPage.clickBottomOrderButton();
         }
 
         boolean isNameFieldVisible = orderPage.isNameFieldVisible();

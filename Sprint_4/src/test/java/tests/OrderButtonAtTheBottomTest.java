@@ -1,6 +1,6 @@
 package tests;
 
-import urls.Urls;
+import formPage.Urls;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 import formPage.OrderPage;
+import formPage.MainPage;
 import static formPage.TestData.ORDER_DATA;
 
 @RunWith(Parameterized.class)
@@ -24,6 +25,7 @@ public class OrderButtonAtTheBottomTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
+    private MainPage mainPage;
     private OrderPage orderPage;
 
     private final String browser;
@@ -64,6 +66,7 @@ public class OrderButtonAtTheBottomTest {
 
         driver.get(Urls.MAIN_URL);
         wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        mainPage = new MainPage(driver, wait);
         orderPage = new OrderPage(driver, wait);
     }
 
@@ -73,7 +76,7 @@ public class OrderButtonAtTheBottomTest {
         orderPage.closeCookieBanner();
 
         // Клик по нижней кнопке «Заказать»
-        orderPage.clickBottomOrderButton();
+        mainPage.clickBottomOrderButton();
 
         // Заполняем персональные данные
         orderPage.fillPersonalInfo(name, lastName, address, station, phone);
