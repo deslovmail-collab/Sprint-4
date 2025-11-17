@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Parameterized.class)
 public class RentalPageTest {
 
-    private final String browser;
     private final String name;
     private final String lastName;
     private final String address;
@@ -37,10 +36,12 @@ public class RentalPageTest {
     private MainPage mainPage;
     private OrderPage orderPage;
 
-    // Конструктор
-    public RentalPageTest(String browser, String name, String lastName, String address,
+    // Глобальный выбор браузера
+    private static final String BROWSER = System.getProperty("browser", "chrome").toLowerCase();
+
+    // Конструктор без browser
+    public RentalPageTest(String name, String lastName, String address,
                           String metroStation, String phone) {
-        this.browser = browser;
         this.name = name;
         this.lastName = lastName;
         this.address = address;
@@ -48,7 +49,7 @@ public class RentalPageTest {
         this.phone = phone;
     }
 
-    // Параметры теста: Chrome и Firefox + данные
+    // Параметры теста: только данные, без браузера
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(TestData.ORDER_DATA);
@@ -56,17 +57,17 @@ public class RentalPageTest {
 
     @Before
     public void setUp() {
-        // Настройка драйвера в зависимости от браузера
-        if (browser.equalsIgnoreCase("chrome")) {
+        // Настройка драйвера в зависимости от глобального BROWSER
+        if (BROWSER.equalsIgnoreCase("chrome")) {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--no-sandbox", "--disable-dev-shm-usage", "--disable-notifications");
             driver = new ChromeDriver(options);
-        } else if (browser.equalsIgnoreCase("firefox")) {
+        } else if (BROWSER.equalsIgnoreCase("firefox")) {
             FirefoxOptions options = new FirefoxOptions();
             options.addArguments("--disable-notifications");
             driver = new FirefoxDriver(options);
         } else {
-            throw new IllegalArgumentException("Поддерживаемые браузеры: chrome, firefox. Получено: " + browser);
+            throw new IllegalArgumentException("Поддерживаемые браузеры: chrome, firefox. Получено: " + BROWSER);
         }
 
         // Открываем главную страницу

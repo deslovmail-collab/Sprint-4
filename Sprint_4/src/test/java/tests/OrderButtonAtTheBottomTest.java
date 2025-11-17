@@ -28,16 +28,17 @@ public class OrderButtonAtTheBottomTest {
     private MainPage mainPage;
     private OrderPage orderPage;
 
-    private final String browser;
     private final String name;
     private final String lastName;
     private final String address;
     private final String station;
     private final String phone;
 
-    public OrderButtonAtTheBottomTest(String browser, String name, String lastName, String address,
+    // Глобальный выбор браузера (один на весь прогон)
+    private static final String BROWSER = System.getProperty("browser", "chrome").toLowerCase();
+
+    public OrderButtonAtTheBottomTest(String name, String lastName, String address,
                                       String station, String phone) {
-        this.browser = browser;
         this.name = name;
         this.lastName = lastName;
         this.address = address;
@@ -52,16 +53,16 @@ public class OrderButtonAtTheBottomTest {
 
     @Before
     public void setUp() {
-        if (browser.equalsIgnoreCase("chrome")) {
+        if (BROWSER.equalsIgnoreCase("chrome")) {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--no-sandbox", "--disable-dev-shm-usage", "--disable-notifications");
             driver = new ChromeDriver(options);
-        } else if (browser.equalsIgnoreCase("firefox")) {
+        } else if (BROWSER.equalsIgnoreCase("firefox")) {
             FirefoxOptions options = new FirefoxOptions();
             options.addArguments("--disable-notifications");
             driver = new FirefoxDriver(options);
         } else {
-            throw new IllegalArgumentException("Неизвестный браузер: " + browser);
+            throw new IllegalArgumentException("Неизвестный браузер: " + BROWSER);
         }
 
         driver.get(Urls.MAIN_URL);
